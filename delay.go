@@ -68,6 +68,28 @@ func (d *Delay) Done() {
 	}
 }
 
+// Go runs f inside a goroutine which marks d as in use. The following
+// two examples achieve the same.
+//
+//	d := delay.New()
+//	d.Go(func() {
+//		foobar(42)
+//	})
+//	...
+//
+//	d.Use()
+//	go func() {
+//		defer d.Done()
+//		foobar(42)
+//	}()
+func (d *Delay) Go(f func()) {
+	d.Use()
+	go func(fn func()) {
+		defer d.Done()
+		fn()
+	}(f)
+}
+
 // Wait blocks until d is unused. Users of d can change while
 // it is blocking.
 func (d *Delay) Wait() {
