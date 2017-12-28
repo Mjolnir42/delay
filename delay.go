@@ -17,7 +17,7 @@ import (
 // Delay can be used for continuous, lazy waiting for a set
 // of goroutines.
 //
-//	d := delay.NewDelay()
+//	d := delay.New()
 //	...
 //	d.Use()
 //	go func() {
@@ -33,8 +33,8 @@ type Delay struct {
 	cond  *sync.Cond
 }
 
-// NewDelay returns a new delay
-func NewDelay() *Delay {
+// New returns a new delay
+func New() *Delay {
 	d := &Delay{
 		lock: &sync.RWMutex{},
 	}
